@@ -28,8 +28,21 @@ class CategoryFactory(factory.django.DjangoModelFactory):
 # Task model
 class TaskFactory(factory.django.DjangoModelFactory):
     category = factory.SubFactory('core.factories.CategoryFactory') 
-    user = factory.SubFactory('core.factories.UserFactory')
+    # user = factory.SubFactory('core.factories.UserFactory')
     name = fuzzy.FuzzyText(length=20, suffix="_tname")
+    @factory.post_generation
+    def user(self, create, extracted, **kwargs):
+        if not create:
+            # Si no se está creando la instancia (e.g. si se está construyendo en lugar de crear)
+            return
+
+        if extracted:
+            # Si se pasan usuarios, agrégalos a la relación many-to-many
+            for user in extracted:
+                self.user.add(user)
+        else:
+            # Si no se pasa nada, crea un usuario por defecto y agrégalo
+            self.user.add(UserFactory())
 
     class Meta :
         model = models.Task
