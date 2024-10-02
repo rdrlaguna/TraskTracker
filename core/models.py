@@ -86,9 +86,9 @@ class Task(models.Model):
     category = models.ForeignKey("core.Category", on_delete=models.CASCADE, related_name="tasks")
     user = models.ManyToManyField("core.User", related_name="tasks")
     name = models.CharField(max_length = 64)
-    started_at = models.DateField()
-    finished_at = models.DateField()
-    created_at = models.DateField()
+    # started_at = models.DateField()
+    # finished_at = models.DateField()
+    # created_at = models.DateField()
     class Meta : 
         app_label="core"
         db_table="tasks"
@@ -96,10 +96,10 @@ class Task(models.Model):
         verbose_name_plural="Tasks"
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
-'''
+
 class Group(Group):
     uuid = models.UUIDField(
         primary_key = True,
@@ -110,4 +110,3 @@ class Group(Group):
         db_table="groups"
         verbose_name="Group"
         verbose_name_plural="Groups"
-'''
